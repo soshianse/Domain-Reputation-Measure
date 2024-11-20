@@ -1,5 +1,5 @@
 # Domain Reputation Measure 
-This project aims to develop a comprehensive measure for domain reputation by leveraging a variety of data sources and relationship mappings of unique identifiers in multiple contexts such as DNS records, WHOIS records, BGP activities, and IP/ASN registration data. 
+This project aims to develop a comprehensive measure for domain reputation by leveraging various data sources and relationship mappings of unique identifiers in multiple contexts such as DNS records, WHOIS records, BGP activities, and IP/ASN registration data. 
 
 The measure provides a real-time ranking of domain reputations that can be queried per domain or aggregated based on identifiers like IP addresses or autonomous system numbers (ASNs). 
 ## Table of Contents 
@@ -48,5 +48,5 @@ For more detailed usage instructions, refer to the `docs` directory.
 Contributions are welcome! Please fork the repository and submit a pull request with your changes. Make sure to update tests as appropriate.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. ``` 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
  
