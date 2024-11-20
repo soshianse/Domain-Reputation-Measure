@@ -1,5 +1,5 @@
-# Domain Reputation Measure T
-his project aims to develop a comprehensive measure for domain reputation by leveraging a variety of data sources and relationship mappings of unique identifiers in multiple contexts such as DNS records, WHOIS records, BGP activities, and IP/ASN registration data. 
+# Domain Reputation Measure 
+This project aims to develop a comprehensive measure for domain reputation by leveraging a variety of data sources and relationship mappings of unique identifiers in multiple contexts such as DNS records, WHOIS records, BGP activities, and IP/ASN registration data. 
 
 The measure provides a real-time ranking of domain reputations that can be queried per domain or aggregated based on identifiers like IP addresses or autonomous system numbers (ASNs). 
 ## Table of Contents 
