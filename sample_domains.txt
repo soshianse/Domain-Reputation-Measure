@@ -1,0 +1,5 @@
+google.com
+github.com
+replit.com
+example.com
+wikipedia.org

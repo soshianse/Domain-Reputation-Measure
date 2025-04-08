@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+
+{% block title %}Domain ASN Mapper - Results{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Processing Results</h2>
+                <div>
+                    <a href="{{ url_for('download_results', job_id=job_id, format=format_type) }}" class="btn btn-outline-light">
+                        <i class="bi bi-download"></i> Download Results
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-light ms-2">
+                        <i class="bi bi-arrow-left"></i> New Lookup
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if format_type == 'json' and results %}
+                    <ul class="nav nav-tabs mb-4" id="resultsTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="domains-tab" data-bs-toggle="tab" data-bs-target="#domains-tab-pane" type="button" role="tab">
+                                Domains
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="json-tab" data-bs-toggle="tab" data-bs-target="#json-tab-pane" type="button" role="tab">
+                                Raw JSON
+                            </button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="resultsTabContent">
+                        <div class="tab-pane fade show active" id="domains-tab-pane" role="tabpanel" aria-labelledby="domains-tab" tabindex="0">
+                            <div class="accordion" id="domainsAccordion">
+                                {% for domain_result in results %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#domain{{ loop.index }}">
+                                            <strong>{{ domain_result.domain }}</strong>
+                                            {% if domain_result.error %}
+                                                <span class="badge bg-danger ms-2">Error</span>
+                                            {% else %}
+                                                <span class="badge bg-success ms-2">{{ domain_result.unique_asns|length }} ASNs</span>
+                                            {% endif %}
+                                        </button>
+                                    </h2>
+                                    <div id="domain{{ loop.index }}" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            {% if domain_result.error %}
+                                                <div class="alert alert-danger">
+                                                    Error: {{ domain_result.error }}
+                                                </div>
+                                            {% else %}
+                                                <!-- Unique ASNs Section -->
+                                                <div class="mb-4">
+                                                    <h5>Unique ASNs</h5>
+                                                    <div class="asn-badges">
+                                                        {% for asn, info in domain_result.unique_asns.items() %}
+                                                            <div class="asn-badge bg-primary">
+                                                                ASN {{ asn }} 
+                                                                <span class="badge bg-info ms-1">{{ info.sources|join(', ') }}</span>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="alert alert-warning">No ASNs found</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- A Records Section -->
+                                                {% if domain_result.a_records %}
+                                                <div class="mb-4">
+                                                    <h5>A Records (IPv4)</h5>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead class="table-dark">
+                                                                <tr>
+                                                                    <th>IP Address</th>
+                                                                    <th>ASN</th>
+                                                                    <th>Prefix</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for ip in domain_result.a_records %}
+                                                                    {% set asn_info = namespace(found=false) %}
+                                                                    {% for item in domain_result.asn_info.a_records %}
+                                                                        {% if item.ip == ip %}
+                                                                            {% set asn_info.found = true %}
+                                                                            <tr>
+                                                                                <td>{{ ip }}</td>
+                                                                                <td>{{ item.asn if item.asn != None else 'Unknown' }}</td>
+                                                                                <td>{{ item.prefix if item.prefix != None else 'Unknown' }}</td>
+                                                                            </tr>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                    {% if not asn_info.found %}
+                                                                        <tr>
+                                                                            <td>{{ ip }}</td>
+                                                                            <td colspan="2">No ASN info found</td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                
+                                                <!-- AAAA Records Section -->
+                                                {% if domain_result.aaaa_records %}
+                                                <div class="mb-4">
+                                                    <h5>AAAA Records (IPv6)</h5>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead class="table-dark">
+                                                                <tr>
+                                                                    <th>IP Address</th>
+                                                                    <th>ASN</th>
+                                                                    <th>Prefix</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for ip in domain_result.aaaa_records %}
+                                                                    {% set asn_info = namespace(found=false) %}
+                                                                    {% for item in domain_result.asn_info.aaaa_records %}
+                                                                        {% if item.ip == ip %}
+                                                                            {% set asn_info.found = true %}
+                                                                            <tr>
+                                                                                <td>{{ ip }}</td>
+                                                                                <td>{{ item.asn if item.asn != None else 'Unknown' }}</td>
+                                                                                <td>{{ item.prefix if item.prefix != None else 'Unknown' }}</td>
+                                                                            </tr>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                    {% if not asn_info.found %}
+                                                                        <tr>
+                                                                            <td>{{ ip }}</td>
+                                                                            <td colspan="2">No ASN info found</td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                
+                                                <!-- NS Records Section -->
+                                                {% if domain_result.ns_records %}
+                                                <div class="mb-4">
+                                                    <h5>NS Records (Nameservers)</h5>
+                                                    <div class="accordion" id="nsAccordion{{ loop.index }}">
+                                                        {% for ns in domain_result.ns_records %}
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ns{{ loop.index }}{{ loop.parent.loop.index }}">
+                                                                    {{ ns.hostname }}
+                                                                </button>
+                                                            </h2>
+                                                            <div id="ns{{ loop.index }}{{ loop.parent.loop.index }}" class="accordion-collapse collapse">
+                                                                <div class="accordion-body">
+                                                                    {% if ns.ip_addresses %}
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-striped table-bordered">
+                                                                            <thead class="table-dark">
+                                                                                <tr>
+                                                                                    <th>IP Address</th>
+                                                                                    <th>ASN</th>
+                                                                                    <th>Prefix</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {% for ip in ns.ip_addresses %}
+                                                                                    {% set asn_info = namespace(found=false) %}
+                                                                                    {% for ns_asn in domain_result.asn_info.ns_records %}
+                                                                                        {% if ns_asn.hostname == ns.hostname %}
+                                                                                            {% for item in ns_asn.ip_asn_info %}
+                                                                                                {% if item.ip == ip %}
+                                                                                                    {% set asn_info.found = true %}
+                                                                                                    <tr>
+                                                                                                        <td>{{ ip }}</td>
+                                                                                                        <td>{{ item.asn if item.asn != None else 'Unknown' }}</td>
+                                                                                                        <td>{{ item.prefix if item.prefix != None else 'Unknown' }}</td>
+                                                                                                    </tr>
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                        {% endif %}
+                                                                                    {% endfor %}
+                                                                                    {% if not asn_info.found %}
+                                                                                        <tr>
+                                                                                            <td>{{ ip }}</td>
+                                                                                            <td colspan="2">No ASN info found</td>
+                                                                                        </tr>
+                                                                                    {% endif %}
+                                                                                {% endfor %}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    {% else %}
+                                                                    <div class="alert alert-warning">No IP addresses found for this nameserver</div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                
+                                                <!-- MX Records Section -->
+                                                {% if domain_result.mx_records %}
+                                                <div class="mb-4">
+                                                    <h5>MX Records (Mail Servers)</h5>
+                                                    <div class="accordion" id="mxAccordion{{ loop.index }}">
+                                                        {% for mx in domain_result.mx_records %}
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mx{{ loop.index }}{{ loop.parent.loop.index }}">
+                                                                    {{ mx.hostname }} <span class="badge bg-secondary ms-2">Preference: {{ mx.preference }}</span>
+                                                                </button>
+                                                            </h2>
+                                                            <div id="mx{{ loop.index }}{{ loop.parent.loop.index }}" class="accordion-collapse collapse">
+                                                                <div class="accordion-body">
+                                                                    {% if mx.ip_addresses %}
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-striped table-bordered">
+                                                                            <thead class="table-dark">
+                                                                                <tr>
+                                                                                    <th>IP Address</th>
+                                                                                    <th>ASN</th>
+                                                                                    <th>Prefix</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {% for ip in mx.ip_addresses %}
+                                                                                    {% set asn_info = namespace(found=false) %}
+                                                                                    {% for mx_asn in domain_result.asn_info.mx_records %}
+                                                                                        {% if mx_asn.hostname == mx.hostname %}
+                                                                                            {% for item in mx_asn.ip_asn_info %}
+                                                                                                {% if item.ip == ip %}
+                                                                                                    {% set asn_info.found = true %}
+                                                                                                    <tr>
+                                                                                                        <td>{{ ip }}</td>
+                                                                                                        <td>{{ item.asn if item.asn != None else 'Unknown' }}</td>
+                                                                                                        <td>{{ item.prefix if item.prefix != None else 'Unknown' }}</td>
+                                                                                                    </tr>
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                        {% endif %}
+                                                                                    {% endfor %}
+                                                                                    {% if not asn_info.found %}
+                                                                                        <tr>
+                                                                                            <td>{{ ip }}</td>
+                                                                                            <td colspan="2">No ASN info found</td>
+                                                                                        </tr>
+                                                                                    {% endif %}
+                                                                                {% endfor %}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    {% else %}
+                                                                    <div class="alert alert-warning">No IP addresses found for this mail server</div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="json-tab-pane" role="tabpanel" aria-labelledby="json-tab" tabindex="0">
+                            <pre><code>{{ results|tojson(indent=2) }}</code></pre>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <p>Your results are ready to download in <strong>{{ format_type }}</strong> format.</p>
+                        <a href="{{ url_for('download_results', job_id=job_id, format=format_type) }}" class="btn btn-primary mt-2">
+                            <i class="bi bi-download"></i> Download Results
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
