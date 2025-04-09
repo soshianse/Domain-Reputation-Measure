@@ -92,10 +92,10 @@ Start the local server:
 
 bash
 
-CopyEdit
+```bash
 
 `python main.py --web`
-
+```
 Open your browser and go to `http://localhost:5000`:
 
 1.  Upload a file with domain names (one per line)
@@ -110,10 +110,10 @@ Open your browser and go to `http://localhost:5000`:
 
 bash
 
-CopyEdit
+```bash
 
 `python main.py -d domains.txt -m mrt_file.mrt -o results.json -f json`
-
+```
 #### Options
 
 | Flag | Description |
@@ -143,10 +143,10 @@ Install dependencies:
 
 bash
 
-CopyEdit
+```bash
 
 `pip install dnspython pyasn flask`
-
+```
 * * * * *
 
 Requirements
