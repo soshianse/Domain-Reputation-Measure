@@ -45,14 +45,14 @@ Version 2.0 is a **complete rewrite** with enterprise-grade features:
 
 ---
 
-##Project Overview
+## Project Overview
 ----------------
 
 The **Domain Reputation Measure** project evaluates domain infrastructure from multiple angles---DNS records, WHOIS details, BGP announcements, and IP registration history. The system will ultimately produce real-time, reputation-based scoring that reflects a domain's risk profile, helping organizations mitigate threats before they escalate.
 
 * * * * *
 
-##Strategic Importance
+## Strategic Importance
 --------------------
 
 As cyber threats become increasingly complex, reliable domain reputation assessment is critical. Whether for blacklisting suspicious domains or evaluating infrastructure trustworthiness, organizations require tools that analyze both the behavior and architecture of domains. This project addresses that need with a layered, scalable, and modular system.
