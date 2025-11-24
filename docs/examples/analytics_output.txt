@@ -1,0 +1,16 @@
+======================================================================
+ASN STATISTICS
+======================================================================
+Scan ID:              a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Total Unique ASNs:    12
+Total IP Mappings:    45
+Avg IPs per ASN:      3.75
+Concentration Ratio:  67.85%
+======================================================================
+
+Top ASNs:
+  1. AS15169 (Google LLC): 18 IPs, 8 domains (40.0%)
+  2. AS13335 (Cloudflare): 12 IPs, 5 domains (26.7%)
+  3. AS16509 (Amazon AWS): 7 IPs, 4 domains (15.6%)
+  4. AS36459 (GitHub): 3 IPs, 1 domain (6.7%)
+  5. AS8075 (Microsoft): 2 IPs, 2 domains (4.4%)

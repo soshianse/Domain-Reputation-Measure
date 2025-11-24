@@ -1,0 +1,32 @@
+Found 5 clusters:
+======================================================================
+
+Cluster 1:
+  Domains: 12
+  Shared ASNs: 2
+  ASNs: AS15169, AS16509
+  Domains: google.com, youtube.com, gmail.com, drive.google.com, maps.google.com ... and 7 more
+
+Cluster 2:
+  Domains: 8
+  Shared ASNs: 1
+  ASNs: AS13335
+  Domains: cloudflare.com, cloudflare-dns.com, workers.dev, pages.dev, warp.dev ... and 3 more
+
+Cluster 3:
+  Domains: 6
+  Shared ASNs: 2
+  ASNs: AS16509, AS14618
+  Domains: aws.amazon.com, amazon.com, amazonwebservices.com, a2z.com, awsstatic.com, cloudfront.net
+
+Cluster 4:
+  Domains: 4
+  Shared ASNs: 1
+  ASNs: AS8075
+  Domains: microsoft.com, azure.com, office.com, onedrive.com
+
+Cluster 5:
+  Domains: 3
+  Shared ASNs: 2
+  ASNs: AS36459, AS16509
+  Domains: github.com, github.io, githubusercontent.com

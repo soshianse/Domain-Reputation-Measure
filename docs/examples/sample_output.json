@@ -1,0 +1,109 @@
+[
+  {
+    "domain": "google.com",
+    "a_records": [
+      {"ip": "142.250.185.46", "asn": 15169, "prefix": "142.250.0.0/15"},
+      {"ip": "142.250.185.78", "asn": 15169, "prefix": "142.250.0.0/15"}
+    ],
+    "aaaa_records": [
+      {"ip": "2607:f8b0:4004:c07::71", "asn": 15169, "prefix": "2607:f8b0::/32"}
+    ],
+    "ns_records": {
+      "ns1.google.com": [
+        {"ip": "216.239.32.10", "asn": 15169, "prefix": "216.239.32.0/19"}
+      ],
+      "ns2.google.com": [
+        {"ip": "216.239.34.10", "asn": 15169, "prefix": "216.239.32.0/19"}
+      ],
+      "ns3.google.com": [
+        {"ip": "216.239.36.10", "asn": 15169, "prefix": "216.239.32.0/19"}
+      ],
+      "ns4.google.com": [
+        {"ip": "216.239.38.10", "asn": 15169, "prefix": "216.239.32.0/19"}
+      ]
+    },
+    "mx_records": {
+      "smtp.google.com": {
+        "preference": 10,
+        "ips": [
+          {"ip": "142.250.153.27", "asn": 15169, "prefix": "142.250.0.0/15"}
+        ]
+      }
+    },
+    "unique_asns": [
+      {"asn": 15169, "sources": ["a", "aaaa", "ns", "mx"]}
+    ]
+  },
+  {
+    "domain": "github.com",
+    "a_records": [
+      {"ip": "140.82.121.3", "asn": 36459, "prefix": "140.82.112.0/20"}
+    ],
+    "aaaa_records": [],
+    "ns_records": {
+      "ns-1283.awsdns-32.org": [
+        {"ip": "205.251.197.3", "asn": 16509, "prefix": "205.251.192.0/21"}
+      ],
+      "ns-1707.awsdns-21.co.uk": [
+        {"ip": "205.251.198.171", "asn": 16509, "prefix": "205.251.192.0/21"}
+      ],
+      "ns-421.awsdns-52.com": [
+        {"ip": "205.251.193.165", "asn": 16509, "prefix": "205.251.192.0/21"}
+      ],
+      "ns-520.awsdns-01.net": [
+        {"ip": "205.251.194.8", "asn": 16509, "prefix": "205.251.192.0/21"}
+      ]
+    },
+    "mx_records": {
+      "aspmx.l.google.com": {
+        "preference": 1,
+        "ips": [
+          {"ip": "142.251.10.26", "asn": 15169, "prefix": "142.250.0.0/15"}
+        ]
+      },
+      "alt1.aspmx.l.google.com": {
+        "preference": 5,
+        "ips": [
+          {"ip": "142.251.10.27", "asn": 15169, "prefix": "142.250.0.0/15"}
+        ]
+      }
+    },
+    "unique_asns": [
+      {"asn": 36459, "sources": ["a"]},
+      {"asn": 16509, "sources": ["ns"]},
+      {"asn": 15169, "sources": ["mx"]}
+    ]
+  },
+  {
+    "domain": "cloudflare.com",
+    "a_records": [
+      {"ip": "104.16.132.229", "asn": 13335, "prefix": "104.16.0.0/13"},
+      {"ip": "104.16.133.229", "asn": 13335, "prefix": "104.16.0.0/13"}
+    ],
+    "aaaa_records": [
+      {"ip": "2606:4700::6810:84e5", "asn": 13335, "prefix": "2606:4700::/32"},
+      {"ip": "2606:4700::6810:85e5", "asn": 13335, "prefix": "2606:4700::/32"}
+    ],
+    "ns_records": {
+      "ns3.cloudflare.com": [
+        {"ip": "162.159.0.33", "asn": 13335, "prefix": "162.159.0.0/16"}
+      ],
+      "ns4.cloudflare.com": [
+        {"ip": "162.159.1.33", "asn": 13335, "prefix": "162.159.0.0/16"}
+      ],
+      "ns5.cloudflare.com": [
+        {"ip": "162.159.2.33", "asn": 13335, "prefix": "162.159.0.0/16"}
+      ],
+      "ns6.cloudflare.com": [
+        {"ip": "162.159.3.33", "asn": 13335, "prefix": "162.159.0.0/16"}
+      ],
+      "ns7.cloudflare.com": [
+        {"ip": "162.159.4.33", "asn": 13335, "prefix": "162.159.0.0/16"}
+      ]
+    },
+    "mx_records": {},
+    "unique_asns": [
+      {"asn": 13335, "sources": ["a", "aaaa", "ns"]}
+    ]
+  }
+]

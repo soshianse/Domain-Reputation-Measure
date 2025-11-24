@@ -1,0 +1,38 @@
+======================================================================
+SCAN COMPARISON REPORT
+======================================================================
+
+Previous scan: 150 domains
+Current scan:  152 domains
+
+✅ Added domains: 3
+   + newdomain1.com
+   + newdomain2.com
+   + newdomain3.com
+
+❌ Removed domains: 1
+   - olddomain.com
+
+🔄 Domains with infrastructure changes: 8
+   Total changes detected: 12
+
+Change types:
+   - A_added: 5
+   - A_removed: 2
+   - asn_changed: 3
+   - ns_removed: 2
+
+Detailed changes:
+
+   example.com:
+      ℹ️ 1 A record(s) added
+      ⚠️ ASN changed for A record 203.0.113.5
+
+   test-domain.org:
+      ⚠️ 1 nameserver(s) removed
+      ℹ️ 2 A record(s) added
+
+   another-site.net:
+      ⚠️ ASN changed for A record 198.51.100.10
+
+======================================================================
