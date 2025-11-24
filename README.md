@@ -27,6 +27,8 @@ Version 2.0 is a **complete rewrite** with enterprise-grade features:
 
 ## Table of Contents
 
+- [Project Overview](#Project Overview)
+- [Strategic Importance](#Strategic Importance)
 - [Features](#features)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
@@ -43,7 +45,22 @@ Version 2.0 is a **complete rewrite** with enterprise-grade features:
 
 ---
 
+##Project Overview
+----------------
+
+The **Domain Reputation Measure** project evaluates domain infrastructure from multiple angles---DNS records, WHOIS details, BGP announcements, and IP registration history. The system will ultimately produce real-time, reputation-based scoring that reflects a domain's risk profile, helping organizations mitigate threats before they escalate.
+
+* * * * *
+
+##Strategic Importance
+--------------------
+
+As cyber threats become increasingly complex, reliable domain reputation assessment is critical. Whether for blacklisting suspicious domains or evaluating infrastructure trustworthiness, organizations require tools that analyze both the behavior and architecture of domains. This project addresses that need with a layered, scalable, and modular system.
+
+* * * * *
+
 ## Features
+----------------
 
 ### Core Functionality
 - 📡 **Complete DNS Resolution**: A, AAAA, NS, MX records
@@ -76,6 +93,7 @@ Version 2.0 is a **complete rewrite** with enterprise-grade features:
 ---
 
 ## Quick Start
+----------------
 
 ### Using Docker (Recommended)
 
@@ -114,6 +132,7 @@ domain-asn-mapper analytics
 ---
 
 ## Installation
+----------------
 
 ### Requirements
 
@@ -150,6 +169,7 @@ pip install -e ".[all]"
 ---
 
 ## Usage
+----------------
 
 ### CLI Commands
 
@@ -285,6 +305,7 @@ Features:
 ---
 
 ## Docker Deployment
+----------------
 
 ### Quick Start with SQLite
 
@@ -326,6 +347,7 @@ curl http://localhost:5000/metrics
 ---
 
 ## Configuration
+----------------
 
 ### Environment Variables
 
@@ -375,6 +397,7 @@ logging:
 ---
 
 ## Examples
+----------------
 
 ### Example 1: Basic Domain Mapping
 
@@ -426,6 +449,7 @@ python3 main.py cluster --min-shared 3 -o clusters.json
 ---
 
 ## Architecture
+----------------
 
 ```
 domain-asn-mapper/
@@ -468,6 +492,7 @@ domain-asn-mapper/
 ---
 
 ## Performance
+----------------
 
 ### Benchmarks
 
@@ -490,6 +515,7 @@ Tested on MacBook Pro M1, 100 domains:
 ---
 
 ## Contributing
+----------------
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
@@ -515,6 +541,7 @@ mypy core/
 ---
 
 ## Related Projects
+----------------
 
 - **RIPE RIS**: BGP routing data source
 - **pyasn**: IP-to-ASN mapping library
@@ -523,6 +550,7 @@ mypy core/
 ---
 
 ## Citation
+----------------
 
 If you use this tool in your research, please cite:
 
@@ -541,12 +569,14 @@ See also: [RIPE Labs Article](https://labs.ripe.net/author/soroush-rafiee-rad/do
 ---
 
 ## License
+----------------
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
 ## Support
+----------------
 
 - **Documentation**: [docs/](docs/)
 - **Issues**: [GitHub Issues](https://github.com/yourusername/domain-asn-mapper/issues)
