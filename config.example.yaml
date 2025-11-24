@@ -1,0 +1,81 @@
+# Domain ASN Mapper Configuration
+# Copy this file to config.yaml and customize as needed
+
+# DNS resolution settings
+dns:
+  # Timeout for DNS queries in seconds
+  timeout: 5
+
+  # Number of retries for failed DNS queries
+  retries: 2
+
+  # Custom nameservers (optional, null means use system default)
+  # Example: ['8.8.8.8', '1.1.1.1']
+  nameservers: null
+
+# Processing settings
+processing:
+  # Maximum number of concurrent workers for parallel processing
+  max_workers: 10
+
+  # Batch size for progress updates
+  batch_size: 100
+
+  # How often to log progress (every N domains)
+  progress_update_interval: 100
+
+# Output settings
+output:
+  # Default output format (json, csv, or text)
+  default_format: json
+
+  # Automatically create output directories if they don't exist
+  create_directories: true
+
+# Logging configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: INFO
+
+  # Log format
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+  # Log file path (null means console only)
+  file: null
+
+  # Use JSON format for structured logging (useful for log aggregation)
+  json_format: false
+
+  # Maximum log file size in bytes (10MB default)
+  max_bytes: 10485760
+
+  # Number of backup log files to keep
+  backup_count: 5
+
+# Web interface settings
+web:
+  # Host to bind to
+  host: 0.0.0.0
+
+  # Port to listen on
+  port: 5000
+
+  # Enable debug mode (DO NOT use in production)
+  debug: false
+
+  # Maximum upload size in bytes (50MB default)
+  max_upload_size: 52428800
+
+  # Session secret key (MUST be set via SESSION_SECRET environment variable in production)
+  session_secret: null
+
+# MRT file settings
+mrt:
+  # Directory to cache converted .dat files (null means use system temp directory)
+  cache_dir: null
+
+  # Automatically download MRT files if not found
+  auto_download: false
+
+  # Default MRT file download URL (if auto_download is true)
+  default_url: null

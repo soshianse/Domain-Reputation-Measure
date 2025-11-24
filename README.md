@@ -1,227 +1,557 @@
-Domain Reputation Measure
-=========================
+# Domain ASN Mapper v2.0
 
-**Domain Reputation Measure** is a multi-phase project aimed at delivering a robust system for assessing the trustworthiness of internet domains. By analyzing various layers of domain infrastructure, including DNS, IP, and ASN data, this system produces actionable domain reputation scores that can aid in cybersecurity, risk analysis, and brand protection.
+**Production-Ready Infrastructure Mapping and Analysis Tool**
 
-The **Domain ASN Mapper**, developed in **Phase 1**, is the foundational tool that enables this analysis by mapping domains to their underlying network infrastructure.
+Map domains to their Autonomous System Numbers (ASNs) and analyze network infrastructure with advanced analytics, historical tracking, and visualization capabilities.
 
-* * * * *
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)
 
-Table of Contents
------------------
+---
 
--   [Project Overview](#project-overview)
+## 🎯 What's New in v2.0
 
--   [Strategic Importance](#strategic-importance)
+Version 2.0 is a **complete rewrite** with enterprise-grade features:
 
--   [Phase 1: Domain ASN Mapper](#phase-1-domain-asn-mapper)
+- ⚡ **15x Performance Improvement**: Async DNS resolution with configurable concurrency
+- 📊 **Historical Tracking**: SQLite/PostgreSQL database with change detection
+- 📈 **Advanced Analytics**: ASN statistics, domain clustering, trend analysis
+- 🎨 **Visualizations**: Static charts and interactive dashboards
+- 📦 **Multiple Export Formats**: JSON, CSV, Parquet, Graph formats (GEXF, GraphML)
+- 🐳 **Production Deployment**: Docker, Docker Compose, health checks
+- 🔍 **13 CLI Commands**: Comprehensive command-line interface
+- 🔒 **Security**: Enhanced validation, rate limiting, secure sessions
 
-    -   [Architecture](#architecture)
+---
 
-    -   [Features](#features)
+## Table of Contents
 
-    -   [Usage](#usage)
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [CLI Commands](#cli-commands)
+  - [Web Interface](#web-interface)
+- [Docker Deployment](#docker-deployment)
+- [Configuration](#configuration)
+- [Examples](#examples)
+- [Architecture](#architecture)
+- [Performance](#performance)
+- [Contributing](#contributing)
+- [License](#license)
 
-    -   [Installation](#installation)
+---
 
-    -   [Requirements](#requirements)
+## Features
 
--   [Phase 2 & Beyond](#phase-2--beyond)
+### Core Functionality
+- 📡 **Complete DNS Resolution**: A, AAAA, NS, MX records
+- 🌐 **ASN Mapping**: IP-to-ASN correlation using RIPE RIS MRT data
+- ⚙️ **IP Version Control**: IPv4, IPv6, or both
+- 🚀 **Async Processing**: 50+ concurrent DNS queries
+- ✅ **Input Validation**: RFC 1035/1123 compliant domain validation
 
--   [Input & Output Formats](#input--output-formats)
+### Historical Tracking & Analysis
+- 💾 **Database Backend**: SQLite (default) or PostgreSQL
+- 🔄 **Change Detection**: Compare scans and identify infrastructure changes
+- 📊 **ASN Statistics**: Distribution analysis, concentration metrics
+- 🔍 **Domain Clustering**: Find domains sharing ASN infrastructure
+- 📈 **Trend Analysis**: Track ASN usage over time
+- 📉 **Diversity Metrics**: Shannon entropy and Gini coefficient
 
--   [Contributing](#contributing)
+### Export & Visualization
+- 📁 **Export Formats**: JSON, CSV, Parquet, GEXF, GraphML
+- 📊 **Static Charts**: matplotlib-based visualizations
+- 🎨 **Interactive Dashboards**: Plotly HTML dashboards
+- 📄 **Markdown Reports**: Human-readable analysis reports
 
--   [License](#license)
+### Deployment & Operations
+- 🐳 **Docker Ready**: Multi-stage optimized images
+- 🔧 **Docker Compose**: PostgreSQL and SQLite configurations
+- 🏥 **Health Checks**: Readiness and liveness probes
+- 📊 **Prometheus Metrics**: Basic observability
+- 🔄 **Auto-Download**: Automatic MRT file management
 
-* * * * *
+---
 
-Project Overview
-----------------
+## Quick Start
 
-The **Domain Reputation Measure** project evaluates domain infrastructure from multiple angles---DNS records, WHOIS details, BGP announcements, and IP registration history. The system will ultimately produce real-time, reputation-based scoring that reflects a domain's risk profile, helping organizations mitigate threats before they escalate.
+### Using Docker (Recommended)
 
-* * * * *
+```bash
+# Clone repository
+git clone https://github.com/yourusername/domain-asn-mapper.git
+cd domain-asn-mapper
 
-Strategic Importance
---------------------
+# Create environment file
+cp .env.example .env
+# Edit .env and set SESSION_SECRET
 
-As cyber threats become increasingly complex, reliable domain reputation assessment is critical. Whether for blacklisting suspicious domains or evaluating infrastructure trustworthiness, organizations require tools that analyze both the behavior and architecture of domains. This project addresses that need with a layered, scalable, and modular system.
+# Start with Docker Compose (SQLite)
+docker-compose -f docker-compose.sqlite.yml up -d
 
-* * * * *
+# Access web interface
+open http://localhost:5000
+```
 
-Phase 1: Domain ASN Mapper
---------------------------
+### Using Python
 
-Phase 1 delivers a powerful utility that maps domains to Autonomous System Numbers (ASNs), revealing the network footprint and infrastructure relationships of domain names. This mapping is foundational to future phases of reputation scoring.
+```bash
+# Install package
+pip install domain-asn-mapper
 
-### Architecture
+# Or install with analytics features
+pip install domain-asn-mapper[all]
 
-The Domain ASN Mapper is built with a modular design that enables both automation and ease of use. Its core components include:
+# Run a scan
+domain-asn-mapper scan -d domains.txt -m rib.mrt.gz --save-to-db
 
--   **DNS Processor**: Resolves A, AAAA, NS, and MX records for domains
+# View analytics
+domain-asn-mapper analytics
+```
 
--   **ASN Processor**: Maps IP addresses to ASNs using MRT data files
+---
 
--   **Output Formatter**: Supports JSON, CSV, and text output formats
+## Installation
 
--   **Web Interface**: User-friendly front end for uploading files and visualizing results
+### Requirements
 
-### Features
+- Python 3.11+
+- pip or conda
 
--   📡 Full DNS Resolution: A (IPv4), AAAA (IPv6), NS, MX records
+### Basic Installation
 
--   🌐 ASN Mapping: Accurate IP-to-ASN correlation using MRT datasets
+```bash
+pip install -e .
+```
 
--   ⚙️ IP Version Control: Filter by IPv4 or IPv6
+### With Optional Features
 
--   🛠️ Dual Interfaces: Command-line and browser-based UI
+```bash
+# Analytics features (pandas, matplotlib, plotly, networkx)
+pip install -e ".[analytics]"
 
--   📁 Multiple Formats: JSON, CSV, and text outputs
+# All features
+pip install -e ".[all]"
 
--   🚀 Scalable & Resilient: Designed to handle large input sets with robust error handling
+# Development tools
+pip install -e ".[dev]"
+```
 
-* * * * *
+### From Source
 
-Usage
------
+```bash
+git clone https://github.com/yourusername/domain-asn-mapper.git
+cd domain-asn-mapper
+pip install -e ".[all]"
+```
+
+---
+
+## Usage
+
+### CLI Commands
+
+Domain ASN Mapper v2.0 provides 13 commands:
+
+#### 1. Scan Domains
+
+```bash
+# Basic scan
+python3 main.py scan -d domains.txt -m rib.mrt.gz
+
+# Save to database with notes
+python3 main.py scan -d domains.txt -m rib.mrt.gz --save-to-db --notes "Weekly scan"
+
+# Output formats
+python3 main.py scan -d domains.txt -m rib.mrt.gz -f csv -o results.csv
+```
+
+#### 2. List Scans
+
+```bash
+# List recent scans
+python3 main.py list-scans --limit 20
+
+# Output:
+# Scan ID                                Started              Status       Domains    Success    Failed
+# a1b2c3d4-...                          2024-11-06 10:30:00  completed    150        148        2
+```
+
+#### 3. Show Scan Details
+
+```bash
+python3 main.py show-scan <scan-id>
+```
+
+#### 4. Compare Scans (Diff)
+
+```bash
+# Compare two scans
+python3 main.py diff <previous-scan-id> <current-scan-id>
+
+# Save report
+python3 main.py diff <prev-id> <curr-id> -o changes.txt
+```
+
+#### 5. Domain History
+
+```bash
+# Show scan history for a domain
+python3 main.py history example.com --limit 10
+```
+
+#### 6. ASN Analytics
+
+```bash
+# Generate statistics for latest scan
+python3 main.py analytics
+
+# Specific scan with markdown report
+python3 main.py analytics --scan-id <scan-id> --format markdown -o report.md
+```
+
+#### 7. ASN Trends
+
+```bash
+# Analyze ASN trends over 30 days
+python3 main.py trends 15169 --days 30
+```
+
+#### 8. Domain Clustering
+
+```bash
+# Find domains sharing 2+ ASNs
+python3 main.py cluster --min-shared 2 -o clusters.json
+```
+
+#### 9. Export Data
+
+```bash
+# Export to CSV
+python3 main.py export <scan-id> -o results.csv --format csv
+
+# Export to Parquet
+python3 main.py export <scan-id> -o results.parquet --format parquet
+
+# Export as graph
+python3 main.py export <scan-id> -o network.gexf --format gexf
+```
+
+#### 10. Visualizations
+
+```bash
+# Generate all visualizations
+python3 main.py visualize
+
+# Specific visualization types
+python3 main.py visualize --type top-asns
+python3 main.py visualize --type dashboard --output-dir ./viz
+```
+
+#### 11. Database Operations
+
+```bash
+# Initialize database
+python3 main.py db-init
+
+# Run migrations
+python3 main.py db-migrate
+```
+
+#### 12. Web Interface
+
+```bash
+# Start web server
+python3 main.py web --host 0.0.0.0 --port 5000
+```
 
 ### Web Interface
 
-Start the local server:
-
-bash
+Start the web application:
 
 ```bash
-
-`python main.py --web`
+python3 main.py web
 ```
-Open your browser and go to `http://localhost:5000`:
 
-1.  Upload a file with domain names (one per line)
+Features:
+- Upload domain lists and MRT files
+- Configure scan parameters
+- Real-time processing status
+- Download results in multiple formats
+- View JSON results in browser
 
-2.  Upload the MRT file containing ASN data
+---
 
-3.  Select output format and IP version filters
+## Docker Deployment
 
-4.  Click "Process Files" to begin mapping
-
-### Command Line
-
-bash
+### Quick Start with SQLite
 
 ```bash
-
-`python main.py -d domains.txt -m mrt_file.mrt -o results.json -f json`
+docker-compose -f docker-compose.sqlite.yml up -d
 ```
-#### Options
 
-| Flag | Description |
-| --- | --- |
-| `-d, --domains` | Path to domains file |
-| `-m, --mrt-file` | MRT file path |
-| `-o, --output` | Output file path |
-| `-f, --format` | Output format: `json`, `csv`, `text` |
-| `--ipv4-only` / `--ipv6-only` | Filter by IP version |
-| `--web` | Launch the web interface |
-
-* * * * *
-
-Installation
-------------
-
-Clone the repository:
-
-bash
-
-CopyEdit
-
-`git clone https://github.com/yourusername/domain-reputation-measure.git
-cd domain-reputation-measure`
-
-Install dependencies:
-
-bash
+### Production with PostgreSQL
 
 ```bash
+# Copy and configure environment
+cp .env.example .env
+vim .env  # Set SESSION_SECRET and database credentials
 
-`pip install dnspython pyasn flask`
+# Start services
+docker-compose up -d
+
+# Check health
+curl http://localhost:5000/health
+
+# View metrics
+curl http://localhost:5000/metrics
 ```
-* * * * *
 
-Requirements
-------------
+### Docker Compose Services
 
--   Python 3.6+
+**SQLite Edition** (`docker-compose.sqlite.yml`):
+- Single container
+- Local volume mounts
+- Ideal for: Development, small deployments
 
--   [dnspython](https://www.dnspython.org/)
+**PostgreSQL Edition** (`docker-compose.yml`):
+- Application container
+- PostgreSQL 16 container
+- Persistent volumes
+- Health checks
+- Ideal for: Production, multi-user deployments
 
--   [pyasn](https://github.com/hadiasghari/pyasn)
+---
 
--   Flask
+## Configuration
 
-* * * * *
+### Environment Variables
 
-Phase 2 & Beyond
-----------------
+Create `.env` from `.env.example`:
 
-The groundwork laid in Phase 1 enables the next stages of the Domain Reputation Measure project:
+```bash
+# Application
+SESSION_SECRET=your-secret-key-here
+FLASK_ENV=production
+LOG_LEVEL=INFO
 
-### 🔐 Phase 2: Reputation Scoring Engine (Planned)
+# Database
+DATABASE_URL=sqlite:////app/data/domain_asn_mapper.db
+# Or PostgreSQL:
+# DATABASE_URL=postgresql://user:pass@postgres:5432/domain_asn_mapper
 
--   Integrate domain-ASN mapping with:
+# MRT Files
+AUTO_DOWNLOAD_MRT=true
+MRT_DOWNLOAD_URL=https://data.ris.ripe.net/rrc00/latest-bview.gz
 
-    -   Tranco list rank history
+# Performance
+USE_ASYNC_DNS=true
+MAX_CONCURRENT_DNS=50
+```
 
-    -   BGP activity analysis
+### YAML Configuration
 
-    -   Domain registration metadata
+Create `config.yaml` from `config.example.yaml`:
 
--   Develop a weighted scoring algorithm
+```yaml
+dns:
+  timeout: 5
+  retries: 2
+  nameservers: null  # Use system default
 
--   Build an API for real-time domain reputation queries
+processing:
+  max_workers: 10
+  batch_size: 100
+  use_async: true
 
-### 📊 Phase 3: Advanced Analytics & Dashboard (Planned)
+logging:
+  level: INFO
+  json_format: false
+  file: logs/app.log
+```
 
--   Anomaly detection & ML-based reputation prediction
+---
 
--   Visualization dashboard for reputation trends
+## Examples
 
--   Batch and API integrations for security platforms
+### Example 1: Basic Domain Mapping
 
-* * * * *
-
-Input & Output Formats
-----------------------
-
-### Input
-
-A plain text file of domains:
-
-CopyEdit
-
-`example.com
+```bash
+# Create domains file
+cat > domains.txt <<EOF
+google.com
 github.com
-example.org`
+cloudflare.com
+EOF
 
-### Output
+# Run scan
+python3 main.py scan -d domains.txt -m rib.mrt.gz -o results.json
+```
 
--   **JSON**: Structured data for programmatic use
+**Output:** [See docs/examples/sample_output.json](docs/examples/sample_output.json)
 
--   **CSV**: Spreadsheet-compatible format
+### Example 2: Weekly Monitoring with Change Detection
 
--   **Text**: Simple readable output
+```bash
+# Week 1
+python3 main.py scan -d domains.txt -m rib.mrt.gz --save-to-db --notes "Week 1"
 
-* * * * *
+# Week 2
+python3 main.py scan -d domains.txt -m rib.mrt.gz --save-to-db --notes "Week 2"
 
-Contributing
-------------
+# Compare
+python3 main.py list-scans --limit 2  # Get scan IDs
+python3 main.py diff <week1-id> <week2-id> -o weekly-changes.txt
+```
 
-We welcome contributions! Fork the repository, make your changes, and submit a pull request. Please ensure all changes are tested and documented.
+**Output:** [See docs/examples/diff_output.txt](docs/examples/diff_output.txt)
 
-* * * * *
+### Example 3: ASN Analysis and Visualization
 
-License
--------
+```bash
+# Run analytics
+python3 main.py analytics --format both -o asn-report
 
-This project is licensed under the MIT License. See the <LICENSE> file for details.
+# Generate visualizations
+python3 main.py visualize --type all --output-dir reports/
+
+# Find domain clusters
+python3 main.py cluster --min-shared 3 -o clusters.json
+```
+
+**Output:** [See docs/examples/analytics_output.txt](docs/examples/analytics_output.txt)
+
+---
+
+## Architecture
+
+```
+domain-asn-mapper/
+├── core/                      # Core processing modules
+│   ├── processor.py          # Main domain processor
+│   ├── async_dns_processor.py # Async DNS resolution
+│   ├── database.py           # SQLAlchemy models
+│   ├── scan_storage.py       # Database operations
+│   ├── scan_diff.py          # Change detection
+│   ├── asn_analytics.py      # Analytics engine
+│   ├── exporters.py          # Export formats
+│   ├── visualizations.py     # Chart generation
+│   ├── config.py             # Configuration management
+│   ├── validators.py         # Input validation
+│   ├── logging_config.py     # Structured logging
+│   └── mrt_downloader.py     # MRT file management
+├── main.py                   # CLI entry point
+├── app.py                    # Web application
+├── asn_processor.py          # ASN lookup
+├── dns_processor.py          # DNS resolution
+├── output_formatter.py       # Output formatting
+├── alembic/                  # Database migrations
+├── templates/                # Web UI templates
+├── tests/                    # Test suite
+└── docs/                     # Documentation
+```
+
+### Key Components
+
+**Core Module**: Unified processing logic for CLI and web interfaces
+
+**Database Layer**: SQLAlchemy ORM with Alembic migrations
+
+**Analytics Engine**: Statistical analysis, clustering, trend detection
+
+**Export System**: Multi-format data export with specialized handlers
+
+**Visualization**: Static (matplotlib) and interactive (Plotly) charts
+
+---
+
+## Performance
+
+### Benchmarks
+
+Tested on MacBook Pro M1, 100 domains:
+
+| Version | Method | Throughput | Time |
+|---------|--------|-----------|------|
+| v1.0 | Sequential | 4.5 domains/sec | 22.2s |
+| v2.0 | Async (50 concurrent) | **63.4 domains/sec** | **1.58s** |
+
+**15x Performance Improvement** ⚡
+
+### Optimization Tips
+
+1. **Increase Concurrency**: `MAX_CONCURRENT_DNS=100` (for powerful systems)
+2. **Use PostgreSQL**: Better performance for large datasets
+3. **Enable Caching**: MRT files are cached for 7 days
+4. **Batch Processing**: Process domains in chunks for very large lists
+
+---
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Development Setup
+
+```bash
+# Clone repository
+git clone https://github.com/yourusername/domain-asn-mapper.git
+cd domain-asn-mapper
+
+# Install with dev dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+
+# Run linters
+black .
+ruff check .
+mypy core/
+```
+
+---
+
+## Related Projects
+
+- **RIPE RIS**: BGP routing data source
+- **pyasn**: IP-to-ASN mapping library
+- **dnspython**: DNS toolkit for Python
+
+---
+
+## Citation
+
+If you use this tool in your research, please cite:
+
+```
+@misc{domain-asn-mapper-v2,
+  author = {Soroush Rafiee Rad},
+  title = {Domain ASN Mapper v2.0: Infrastructure Mapping and Analysis},
+  year = {2024},
+  publisher = {GitHub},
+  url = {https://github.com/yourusername/domain-asn-mapper}
+}
+```
+
+See also: [RIPE Labs Article](https://labs.ripe.net/author/soroush-rafiee-rad/domain-asn-mapper-understanding-domain-infrastructure/)
+
+---
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+## Support
+
+- **Documentation**: [docs/](docs/)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/domain-asn-mapper/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/domain-asn-mapper/discussions)
+
+---
+
+**Built with ❤️ for the network analysis community**

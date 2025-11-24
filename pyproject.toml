@@ -1,15 +1,124 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "repl-nix-workspace"
-version = "0.1.0"
-description = "Add your description here"
+name = "domain-asn-mapper"
+version = "2.0.0"
+description = "Map domains to ASNs by resolving DNS records and mapping IPs to Autonomous System Numbers"
+readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-    "dnspython>=2.7.0",
-    "email-validator>=2.2.0",
-    "flask>=3.1.0",
-    "flask-sqlalchemy>=3.1.1",
-    "gunicorn>=23.0.0",
-    "psycopg2-binary>=2.9.10",
-    "pyasn>=1.6.2",
-    "werkzeug>=3.1.3",
+license = {text = "MIT"}
+authors = [
+    {name = "Soroush Rafiee Rad", email = "soroush@example.com"}
 ]
+maintainers = [
+    {name = "Soroush Rafiee Rad", email = "soroush@example.com"}
+]
+keywords = [
+    "asn", "dns", "domain", "mapping", "bgp", "routing", "infrastructure",
+    "network", "analysis", "ripe", "ris", "autonomous-system"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Science/Research",
+    "Topic :: Internet",
+    "Topic :: System :: Networking",
+    "Topic :: System :: Networking :: Monitoring",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    # Core dependencies
+    "dnspython>=2.7.0",        # DNS resolution (sync fallback)
+    "aiodns>=3.1.0",           # Async DNS resolution (Phase 2 - Performance)
+    "pycares>=4.3.0",          # c-ares library for aiodns
+    "pyasn>=1.6.2",            # IP-to-ASN mapping
+    "pyyaml>=6.0",             # Configuration management
+
+    # Performance & Progress (Phase 2)
+    "rich>=13.7.0",            # Progress bars and beautiful CLI output
+
+    # Web interface
+    "flask>=3.1.0",            # Web framework
+    "werkzeug>=3.1.3",         # WSGI utilities
+    "gunicorn>=23.0.0",        # Production WSGI server
+
+    # Database (Phase 3 - Historical tracking)
+    "sqlalchemy>=2.0.23",      # ORM
+    "alembic>=1.13.0",         # Database migrations
+    "flask-sqlalchemy>=3.1.1", # ORM for Flask
+    "psycopg2-binary>=2.9.10", # PostgreSQL adapter
+]
+
+[project.optional-dependencies]
+# Analytics features (Phase 4)
+analytics = [
+    "pandas>=2.0.0",           # Data analysis
+    "pyarrow>=14.0.0",         # Parquet support
+    "matplotlib>=3.7.0",       # Static visualizations
+    "plotly>=5.18.0",          # Interactive visualizations
+    "networkx>=3.2",           # Graph analysis
+]
+
+# All optional features
+all = [
+    "pandas>=2.0.0",
+    "pyarrow>=14.0.0",
+    "matplotlib>=3.7.0",
+    "plotly>=5.18.0",
+    "networkx>=3.2",
+]
+
+# Development dependencies
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/domain-asn-mapper"
+Documentation = "https://github.com/yourusername/domain-asn-mapper#readme"
+Repository = "https://github.com/yourusername/domain-asn-mapper"
+"Bug Tracker" = "https://github.com/yourusername/domain-asn-mapper/issues"
+"RIPE Labs Article" = "https://labs.ripe.net/author/soroush-rafiee-rad/domain-asn-mapper-understanding-domain-infrastructure/"
+
+[project.scripts]
+domain-asn-mapper = "main:main"
+
+[tool.setuptools]
+packages = ["core"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.yml", "*.json", "*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false

@@ -1,0 +1,44 @@
+# Docker Compose for Domain ASN Mapper - SQLite Edition
+# Lightweight deployment without external database
+
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ../../Downloads/Domain-Reputation-Measure
+      dockerfile: Dockerfile
+    image: domain-asn-mapper:latest
+    container_name: domain-asn-mapper-sqlite
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      # Application settings
+      - FLASK_ENV=production
+      - SESSION_SECRET=${SESSION_SECRET:-change-me-in-production}
+
+      # Database settings (SQLite)
+      - DATABASE_URL=sqlite:////app/data/domain_asn_mapper.db
+
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - LOG_FILE=/app/logs/app.log
+
+      # MRT file location
+      - MRT_FILE_PATH=/app/data/mrt/latest-bview.gz
+    volumes:
+      # Persist all application data
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./visualizations:/app/visualizations
+      - ./exports:/app/exports
+
+      # Optional: Mount local MRT files
+      # - ./mrt-files:/app/data/mrt:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

@@ -1,0 +1,40 @@
+# MANIFEST.in - Include additional files in the package
+
+# Include documentation
+include README.md
+include LICENSE
+include CHANGELOG.md
+
+# Include configuration examples
+include config.example.yaml
+include .env.example
+
+# Include alembic configuration
+include alembic.ini
+recursive-include alembic *.py *.mako
+
+# Include templates for web interface
+recursive-include templates *.html
+recursive-include static *.css *.js *.png *.jpg *.ico
+
+# Exclude unnecessary files
+exclude .gitignore
+exclude .dockerignore
+exclude Dockerfile
+exclude docker-compose*.yml
+exclude benchmark.py
+
+# Exclude test files
+recursive-exclude tests *
+exclude pytest.ini
+
+# Exclude data and cache directories
+recursive-exclude data *
+recursive-exclude logs *
+recursive-exclude visualizations *
+recursive-exclude exports *
+
+# Exclude development files
+recursive-exclude .github *
+exclude .coverage
+recursive-exclude htmlcov *

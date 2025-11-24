@@ -1,0 +1,110 @@
+# Docker Compose for Domain ASN Mapper
+# Supports both SQLite (default) and PostgreSQL configurations
+
+version: '3.8'
+
+services:
+  # Main application service
+  app:
+    build:
+      context: ../../Downloads/Domain-Reputation-Measure
+      dockerfile: Dockerfile
+    image: domain-asn-mapper:latest
+    container_name: domain-asn-mapper
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      # Application settings
+      - FLASK_ENV=production
+      - SESSION_SECRET=${SESSION_SECRET:-change-me-in-production}
+
+      # Database settings (SQLite by default)
+      - DATABASE_URL=${DATABASE_URL:-sqlite:////app/data/domain_asn_mapper.db}
+
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - LOG_FILE=/app/logs/app.log
+
+      # MRT file location
+      - MRT_FILE_PATH=/app/data/mrt/latest-bview.gz
+    volumes:
+      # Persist database
+      - app-data:/app/data
+
+      # Persist logs
+      - app-logs:/app/logs
+
+      # Persist visualizations and exports
+      - app-visualizations:/app/visualizations
+      - app-exports:/app/exports
+
+      # Optional: Mount local MRT files
+      # - ./mrt-files:/app/data/mrt:ro
+    networks:
+      - domain-asn-network
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # PostgreSQL database (optional, comment out for SQLite)
+  postgres:
+    image: postgres:16-alpine
+    container_name: domain-asn-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-domain_asn_mapper}
+      - POSTGRES_USER=${POSTGRES_USER:-domain_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-change-me-in-production}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - domain-asn-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-domain_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Optional: Redis for caching (future enhancement)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: domain-asn-redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis-data:/data
+  #   networks:
+  #     - domain-asn-network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+networks:
+  domain-asn-network:
+    driver: bridge
+
+volumes:
+  app-data:
+    driver: local
+  app-logs:
+    driver: local
+  app-visualizations:
+    driver: local
+  app-exports:
+    driver: local
+  postgres-data:
+    driver: local
+  # redis-data:
+  #   driver: local

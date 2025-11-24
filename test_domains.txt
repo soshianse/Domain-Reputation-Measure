@@ -1,0 +1,5 @@
+google.com
+github.com
+cloudflare.com
+amazon.com
+microsoft.com
