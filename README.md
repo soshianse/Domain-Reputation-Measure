@@ -27,8 +27,8 @@ Version 2.0 is a **complete rewrite** with enterprise-grade features:
 
 ## Table of Contents
 
-- [Project Overview](#Project Overview)
-- [Strategic Importance](#Strategic Importance)
+- [Project Overview](#project-overview)
+- [Strategic Importance](#strategic-importance)
 - [Features](#features)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
